@@ -1,0 +1,396 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Gefeliciteerd, Jette! 🎉</title>
+  <meta name="description" content="Er ligt een cadeau voor je klaar. Voorzichtig openen, kans op confetti.">
+  <meta name="theme-color" content="#FF4D8D">
+  <meta name="robots" content="noindex, nofollow">
+  <meta property="og:title" content="Er ligt een cadeau voor je klaar 🎁">
+  <meta property="og:description" content="Voorzichtig openen. Kans op confetti.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎉</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Caveat:wght@500;700&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Confetti / sparkle layer (drawn by script.js) -->
+  <canvas id="fx" aria-hidden="true"></canvas>
+
+  <!-- Floating balloons in the background -->
+  <div class="balloons" aria-hidden="true">
+    <span class="balloon b1"></span><span class="balloon b2"></span><span class="balloon b3"></span>
+    <span class="balloon b4"></span><span class="balloon b5"></span><span class="balloon b6"></span>
+  </div>
+
+  <div class="tap-hint" id="tapHint">✨ psst… tik ergens</div>
+
+  <!-- ============ HERO ============ -->
+  <header class="hero">
+    <div class="hero-text">
+      <p class="stamp">Officiële mededeling</p>
+      <h1>
+        <span class="hello">Gefeliciteerd,</span>
+        <span class="name" data-name>Jette</span>
+      </h1>
+      <div class="big24" aria-label="24">
+        <span class="digit d2">2</span><span class="digit d4">4</span>
+      </div>
+      <p class="lede">
+        Gefeliciteerd met je <strong>24e rondje om de zon</strong>!
+        Daar hoort een cadeau bij. Geen sokken, geen bon, maar een dagje uit.
+      </p>
+      <a href="#present" class="btn btn-big">Open je cadeau 🎁</a>
+    </div>
+
+    <figure class="polaroid hero-photo" style="--tilt: 4deg">
+      <span class="tape"></span>
+      <div class="photo" data-photo="hero">
+        <span class="ph"><b>📸</b>Foto van de jarige<small>images/hero.jpg</small></span>
+      </div>
+      <figcaption>De jarige zelf</figcaption>
+    </figure>
+  </header>
+
+  <!-- Ribbon -->
+  <div class="ribbon-wrap" aria-hidden="true">
+    <div class="ribbon">
+      <div class="ribbon-track">
+        <span>Gefeliciteerd ✦ Hiep hiep hoera ✦ Alles Gute zum Geburtstag ✦ 24 ✦ Lang zal ze leven ✦ Happy Birthday ✦ Prost ✦ Gefeliciteerd ✦ Hiep hiep hoera ✦ Alles Gute zum Geburtstag ✦ 24 ✦ Lang zal ze leven ✦ Happy Birthday ✦ Prost ✦&nbsp;</span>
+        <span>Gefeliciteerd ✦ Hiep hiep hoera ✦ Alles Gute zum Geburtstag ✦ 24 ✦ Lang zal ze leven ✦ Happy Birthday ✦ Prost ✦ Gefeliciteerd ✦ Hiep hiep hoera ✦ Alles Gute zum Geburtstag ✦ 24 ✦ Lang zal ze leven ✦ Happy Birthday ✦ Prost ✦&nbsp;</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ GIFT ============ -->
+  <section id="present" class="section gift-section">
+    <h2 class="section-title">Je cadeau ligt <span class="squiggle">klaar</span></h2>
+    <p class="section-sub">Voorzichtig, het is breekbaar. Daarmee bedoel ik confetti.</p>
+
+    <button class="gift" id="gift" aria-label="Open het cadeau">
+      <span class="gift-lid"><span class="bow"><i></i><i></i></span></span>
+      <span class="gift-box"></span>
+      <span class="gift-shadow"></span>
+    </button>
+    <p class="gift-cta" id="giftCta">Tik op het cadeau om het uit te pakken</p>
+
+    <div class="gift-reveal" id="giftReveal" hidden>
+      <p class="reveal-kicker">Het is…</p>
+      <p class="reveal-big">een dagje uit!</p>
+      <p class="reveal-small">Nou ja, <strong>één van de twee</strong>. Scroll maar naar beneden ↓</p>
+    </div>
+  </section>
+
+  <!-- ============ OPTIONS ============ -->
+  <section id="options" class="section options-section lockable">
+    <div class="lock-overlay">
+      <div class="lock-card">
+        <p class="lock-emoji">🔒</p>
+        <p class="lock-title">Leuk geprobeerd.</p>
+        <p>Eerst je cadeau uitpakken, dan mag je kijken.</p>
+        <a href="#present" class="btn">Naar het cadeau ↑</a>
+      </div>
+    </div>
+
+    <h2 class="section-title">Twee <span class="squiggle">opties</span></h2>
+    <p class="section-sub">Twee heel verschillende dagjes uit. Allebei met mij erbij.</p>
+
+    <div class="options">
+      <!-- Option A: St. Anton -->
+      <article class="option option-ski" id="optSki" data-fx="ski">
+        <div class="option-art" aria-hidden="true">
+          <svg class="mountains" viewBox="0 0 400 180" preserveAspectRatio="xMidYMax slice">
+            <path d="M0 180 L70 70 L120 120 L190 30 L260 110 L310 60 L400 150 L400 180 Z" fill="#BFE6FF"/>
+            <path d="M190 30 L215 62 L203 58 L192 70 L180 58 L170 60 Z" fill="#fff"/>
+            <path d="M70 70 L88 98 L78 94 L70 104 L62 94 L54 96 Z" fill="#fff"/>
+            <path d="M310 60 L330 84 L318 82 L310 92 L300 82 L292 84 Z" fill="#fff"/>
+            <path d="M0 180 L60 120 L140 160 L230 90 L330 150 L400 120 L400 180 Z" fill="#7CC8F7"/>
+            <path d="M230 90 L250 110 L238 108 L230 116 L222 108 L212 110 Z" fill="#fff"/>
+          </svg>
+          <!-- skier drawn facing right; CSS mirrors it when skiing left -->
+          <svg class="skier" viewBox="0 0 64 64">
+            <line x1="42" y1="31" x2="15" y2="51" stroke="#55557A" stroke-width="2.2" stroke-linecap="round"/>
+            <path d="M3 55 H54 Q60 55 61 49" fill="none" stroke="#FFC93C" stroke-width="3.6" stroke-linecap="round"/>
+            <path d="M24 36 L33 43 L27 53" fill="none" stroke="#1E1B4B" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M27 36 L38 42 L35 53" fill="none" stroke="#2B2A6B" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M25 36 L35 22" stroke="#FF4D8D" stroke-width="10" stroke-linecap="round"/>
+            <path d="M34 24 L42 31" stroke="#FF4D8D" stroke-width="5" stroke-linecap="round"/>
+            <path d="M33 21 Q26 17 20 20" fill="none" stroke="#FFC93C" stroke-width="3" stroke-linecap="round"/>
+            <circle cx="40" cy="15" r="6" fill="#FFD7B5"/>
+            <path d="M34 14 A6 6 0 0 1 46 14 Z" fill="#3DB9FF"/>
+            <circle cx="40" cy="7.6" r="2.4" fill="#fff"/>
+            <rect x="41.5" y="13.2" width="6" height="3.4" rx="1.7" fill="#1E1B4B"/>
+          </svg>
+          <div class="snow"></div>
+        </div>
+
+        <div class="option-body">
+          <p class="option-tag">Optie A · De Alpen-editie</p>
+          <h3>St. Anton am Arlberg <span class="flag flag-at" role="img" aria-label="Oostenrijk"></span></h3>
+          <p class="option-desc">Een dag skiën in een van de bekendste skigebieden van de Alpen, met je eigen (licht overgekwalificeerde*) skigids.</p>
+          <ul class="perks">
+            <li><span>🧭</span> Privégids (ik) die de beste pistes kent</li>
+            <li><span>🍲</span> Lunch in een berghut, met Kaiserschmarrn en uitzicht</li>
+            <li><span>🍺</span> Een biertje bij de MooserWirt</li>
+            <li><span>🚡</span> Onbeperkt kletsen in de lift</li>
+          </ul>
+          <p class="footnote">*Kwalificaties: is er al eens geweest en heeft een skijas.</p>
+
+          <figure class="polaroid card-photo" style="--tilt: -3deg">
+            <span class="tape"></span>
+            <div class="photo" data-photo="ski">
+              <span class="ph"><b>🏔️</b>Skifoto<small>images/ski.jpg</small></span>
+            </div>
+            <figcaption>Skiervaring: 1 dag. Ruim voldoende.</figcaption>
+          </figure>
+        </div>
+      </article>
+
+      <div class="vs" aria-hidden="true">of</div>
+
+      <!-- Option B: Bounce Valley -->
+      <article class="option option-bounce" id="optBounce" data-fx="bounce">
+        <div class="option-art" aria-hidden="true">
+          <div class="bouncer">🤸‍♀️</div>
+          <svg class="trampoline" viewBox="0 0 300 110">
+            <ellipse cx="150" cy="40" rx="140" ry="26" fill="#2B2A6B"/>
+            <ellipse class="mat" cx="150" cy="40" rx="122" ry="19" fill="#141338"/>
+            <g stroke="#FFC93C" stroke-width="5" stroke-linecap="round">
+              <line x1="40" y1="56" x2="34" y2="105"/>
+              <line x1="260" y1="56" x2="266" y2="105"/>
+              <line x1="110" y1="64" x2="108" y2="105"/>
+              <line x1="190" y1="64" x2="192" y2="105"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="option-body">
+          <p class="option-tag">Optie B · De achtertuin-editie</p>
+          <h3>Bounce Valley Eindhoven <span class="flag flag-nl" role="img" aria-label="Nederland"></span></h3>
+          <p class="option-desc">Weet je nog, de trampoline in de achtertuin? Die komt terug. Alleen dan groter, overdekt en zonder buren die meekijken.</p>
+          <ul class="perks">
+            <li><span>🤸</span> Springen zoals vroeger in de achtertuin</li>
+            <li><span>🕳️</span> Een schuimbak voor de mislukte salto's</li>
+            <li><span>🌿</span> Geen risico om in de heg te landen</li>
+            <li><span>🏆</span> Officiële salto-wedstrijd (ik win)</li>
+          </ul>
+          <p class="footnote">Antislipsokken verplicht.</p>
+
+          <figure class="polaroid card-photo" style="--tilt: 3deg">
+            <span class="tape"></span>
+            <div class="photo" data-photo="bounce">
+              <span class="ph"><b>🛝</b>Springfoto<small>images/bounce.jpg</small></span>
+            </div>
+            <figcaption>Waar het allemaal begon</figcaption>
+          </figure>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ============ THE DECIDER ============ -->
+  <section id="decider" class="section decider-section lockable">
+    <h2 class="section-title">Welke wordt <span class="squiggle">het?</span></h2>
+    <p class="section-sub">Dat hangt af van één vraag.</p>
+
+    <div class="question-card">
+      <p class="q-label">De grote vraag</p>
+      <p class="question">Kom je later deze winter naar Oostenrijk? 🏔️</p>
+      <div class="answers">
+        <button class="btn answer" data-answer="yes">Ja, ik kom! <span class="flag flag-at" aria-hidden="true"></span></button>
+        <button class="btn answer alt" data-answer="no">Nee, ik blijf in NL 🌷</button>
+        <button class="btn answer ghost" data-answer="maybe">Weet ik nog niet 🤷‍♀️</button>
+      </div>
+    </div>
+
+    <div class="result" id="result" aria-live="polite">
+
+      <!-- YES -> St. Anton -->
+      <div class="ticket ticket-ski" data-result="yes" hidden>
+        <div class="ticket-main">
+          <p class="ticket-kicker">Toegangsbewijs · Verjaardagseditie</p>
+          <h3>Skidag met gids in St.&nbsp;Anton am Arlberg</h3>
+          <dl>
+            <div><dt>Inclusief</dt><dd>Privégids, lunch in een berghut en een biertje bij de MooserWirt</dd></div>
+            <div><dt>Geldig</dt><dd>Winter 2026/27, zodra je in Oostenrijk bent</dd></div>
+            <div><dt>Dresscode</dt><dd>Laagjes. Heel veel laagjes.</dd></div>
+          </dl>
+        </div>
+        <div class="ticket-stub">
+          <span class="stub-emoji">⛷️</span>
+          <span class="stub-no">Nr. 24</span>
+        </div>
+      </div>
+
+      <!-- NO -> Bounce Valley -->
+      <div class="ticket ticket-bounce" data-result="no" hidden>
+        <div class="ticket-main">
+          <p class="ticket-kicker">Toegangsbewijs · Verjaardagseditie</p>
+          <h3>Springsessie bij Bounce Valley Eindhoven</h3>
+          <dl>
+            <div><dt>Inclusief</dt><dd>Onbeperkt springen en een paar twijfelachtige salto's</dd></div>
+            <div><dt>Geldig</dt><dd>Op een dag naar keuze</dd></div>
+            <div><dt>Dresscode</dt><dd>Antislipsokken</dd></div>
+          </dl>
+        </div>
+        <div class="ticket-stub">
+          <span class="stub-emoji">🤸‍♀️</span>
+          <span class="stub-no">Nr. 24</span>
+        </div>
+      </div>
+
+      <!-- MAYBE -> Schrödinger -->
+      <div class="maybe" data-result="maybe" hidden>
+        <p class="maybe-emoji">🐈‍⬛📦</p>
+        <h3>Schrödingers cadeau</h3>
+        <p>Zolang je het nog niet weet, is je cadeau tegelijk een skidag <em>én</em> een trampolinedag. En ook allebei niet.</p>
+        <p class="small">Kom terug en kies zodra je het weet. Het cadeau wacht wel even.</p>
+      </div>
+    </div>
+
+    <div class="redeem" id="redeem" hidden>
+      <p>Inwisselen? Maak een screenshot van je ticket, of druk op deze knop 👇</p>
+      <button class="btn" id="shareBtn">Stuur mijn antwoord 💌</button>
+    </div>
+  </section>
+
+  <!-- ============ STATS ============ -->
+  <section class="section stats-section">
+    <h2 class="section-title">24 in <span class="squiggle">cijfers</span></h2>
+    <div class="stats">
+      <div class="stat"><span class="stat-num" data-count="8766">0</span><span class="stat-label">dagen op deze planeet</span></div>
+      <div class="stat"><span class="stat-num" data-count="210384">0</span><span class="stat-label">uur oud</span></div>
+      <div class="stat"><span class="stat-num" data-count="1">0</span><span class="stat-label">dag echt geskied (tot nu toe)</span></div>
+      <div class="stat"><span class="stat-num" data-count="1">0</span><span class="stat-label">trampoline in de achtertuin (rust zacht)</span></div>
+    </div>
+
+    <div class="compare" id="compare">
+      <p class="compare-title">Hoogteverschil</p>
+      <div class="bar-row">
+        <span class="bar-label">⛷️ St. Anton</span>
+        <span class="bar"><span class="bar-fill ski" style="--w: 100%"></span></span>
+        <span class="bar-num" data-count="1507" data-suffix=" m">0</span>
+      </div>
+      <div class="bar-row">
+        <span class="bar-label">🤸‍♀️ Bounce Valley</span>
+        <span class="bar"><span class="bar-fill bounce" style="--w: .66%"></span></span>
+        <span class="bar-num" data-count="10" data-prefix="± " data-suffix=" m">0</span>
+      </div>
+      <p class="compare-note">St. Anton: van het dorp (1.304 m) tot de top van de Valluga (2.811 m). Bounce Valley: geschat, met een hele goede sprong. Scheelt ongeveer een factor 150.</p>
+    </div>
+  </section>
+
+  <!-- ============ JETTE OP HAAR BEST (tap to reveal) ============ -->
+  <section class="section gallery-section">
+    <h2 class="section-title"><span data-name>Jette</span> op haar <span class="squiggle">best</span></h2>
+    <p class="section-sub">Zes foto's, streng geheim. Tik om ze te openen.</p>
+
+    <div class="gallery">
+      <button class="evidence" style="--tilt: -4deg" aria-label="Foto 1 openen">
+        <span class="ev-inner">
+          <span class="ev-face ev-cover"><span class="ev-stamp">Geheim</span><span class="ev-label">Foto 1</span><span class="ev-tap">tik om te openen</span></span>
+          <span class="ev-face ev-photo">
+            <span class="tape"></span>
+            <span class="photo" data-photo="gallery-1"><span class="ph"><b>📸</b>Foto 1<small>images/gallery-1.jpg</small></span></span>
+            <span class="ev-caption">Misschien beter alleen naar het uitzicht kijken</span>
+          </span>
+        </span>
+      </button>
+      <button class="evidence" style="--tilt: 3deg" aria-label="Foto 2 openen">
+        <span class="ev-inner">
+          <span class="ev-face ev-cover"><span class="ev-stamp">Geheim</span><span class="ev-label">Foto 2</span><span class="ev-tap">tik om te openen</span></span>
+          <span class="ev-face ev-photo">
+            <span class="tape"></span>
+            <span class="photo" data-photo="gallery-2"><span class="ph"><b>📸</b>Foto 2<small>images/gallery-2.jpg</small></span></span>
+            <span class="ev-caption">Yeahhhh peace ✌️</span>
+          </span>
+        </span>
+      </button>
+      <button class="evidence" style="--tilt: -2deg" aria-label="Foto 3 openen">
+        <span class="ev-inner">
+          <span class="ev-face ev-cover"><span class="ev-stamp">Geheim</span><span class="ev-label">Foto 3</span><span class="ev-tap">tik om te openen</span></span>
+          <span class="ev-face ev-photo">
+            <span class="tape"></span>
+            <span class="photo" data-photo="gallery-3"><span class="ph"><b>📸</b>Foto 3<small>images/gallery-3.jpg</small></span></span>
+            <span class="ev-caption">Haha poepchinees?</span>
+          </span>
+        </span>
+      </button>
+      <button class="evidence" style="--tilt: 5deg" aria-label="Foto 4 openen">
+        <span class="ev-inner">
+          <span class="ev-face ev-cover"><span class="ev-stamp">Geheim</span><span class="ev-label">Foto 4</span><span class="ev-tap">tik om te openen</span></span>
+          <span class="ev-face ev-photo">
+            <span class="tape"></span>
+            <span class="photo" data-photo="gallery-4"><span class="ph"><b>📸</b>Foto 4<small>images/gallery-4.jpg</small></span></span>
+            <span class="ev-caption">Hier zullen we het maar niet over hebben</span>
+          </span>
+        </span>
+      </button>
+      <button class="evidence" style="--tilt: -3deg" aria-label="Foto 5 openen">
+        <span class="ev-inner">
+          <span class="ev-face ev-cover"><span class="ev-stamp">Geheim</span><span class="ev-label">Foto 5</span><span class="ev-tap">tik om te openen</span></span>
+          <span class="ev-face ev-photo">
+            <span class="tape"></span>
+            <span class="photo" data-photo="gallery-5"><span class="ph"><b>📸</b>Foto 5<small>images/gallery-5.jpg</small></span></span>
+            <span class="ev-caption">Sad Jette</span>
+          </span>
+        </span>
+      </button>
+      <button class="evidence" style="--tilt: 2deg" aria-label="Foto 6 openen">
+        <span class="ev-inner">
+          <span class="ev-face ev-cover"><span class="ev-stamp">Geheim</span><span class="ev-label">Foto 6</span><span class="ev-tap">tik om te openen</span></span>
+          <span class="ev-face ev-photo">
+            <span class="tape"></span>
+            <span class="photo" data-photo="gallery-6"><span class="ph"><b>📸</b>Foto 6<small>images/gallery-6.jpg</small></span></span>
+            <span class="ev-caption">What the dawg doing</span>
+          </span>
+        </span>
+      </button>
+    </div>
+    <p class="case-status" id="caseStatus" aria-live="polite">0 van 6 foto's bekeken</p>
+  </section>
+
+  <!-- ============ CAKE ============ -->
+  <section class="section cake-section" data-fx="cake">
+    <h2 class="section-title">Nog één ding: <span class="squiggle">doe een wens</span></h2>
+    <p class="section-sub">Ogen dicht, wens bedenken, en tik dan op de taart om de kaarsjes uit te blazen.</p>
+
+    <button class="cake" id="cake" aria-label="Blaas de kaarsjes uit">
+      <span class="candles">
+        <span class="candle c2"><span class="flame"></span><span class="num">2</span></span>
+        <span class="candle c4"><span class="flame"></span><span class="num">4</span></span>
+      </span>
+      <span class="tier tier-top"><span class="drip"></span></span>
+      <span class="tier tier-bottom"><span class="sprinkles"></span></span>
+      <span class="plate"></span>
+    </button>
+    <p class="wish-msg" id="wishMsg">De kaarsjes wachten…</p>
+  </section>
+
+  <!-- ============ FINE PRINT ============ -->
+  <section class="section fineprint-section">
+    <div class="fineprint">
+      <h2>De kleine lettertjes</h2>
+      <ol>
+        <li>De gids staat mogelijk beneden aan de piste op je te wachten (te snel, sorry).</li>
+        <li>Kaiserschmarrn mag gedeeld worden.</li>
+        <li>Eenmalig geldig voor één persoon genaamd <span data-name>Jette</span>, 24 jaar.</li>
+        <li>Niet inwisselbaar voor geld.</li>
+        <li>Spierpijn achteraf valt niet onder de garantie.</li>
+      </ol>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p class="footer-big">Gefeliciteerd, <span data-name>Jette</span>! 🎉</p>
+    <p>Gemaakt met liefde en veel te veel confetti.</p>
+    <button class="btn" id="finale">Nog één keer confetti 🎊</button>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

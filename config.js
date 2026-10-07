@@ -13,7 +13,7 @@ const CONFIG = {
   name: "Jette",
 
   // Number of candles on the cake (she has to tap every single one).
-  candles: 24,
+  candles: 23,
 
   // Optional: your phone number in international format, digits only
   // (e.g. "31612345678"). If filled in, the "Stuur mijn antwoord" button opens

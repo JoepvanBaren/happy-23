@@ -5,7 +5,7 @@ const CONFIG = {
   // ⏰ The site shows a blurred lock screen with a countdown until this moment,
   //    then opens by itself (with confetti). "+02:00" = Dutch/Austrian summer
   //    time, which applies until 25 October.
-  unlockAt: "2026-10-07T18:35:00+02:00",
+  unlockAt: "2026-10-07T18:30:00+02:00",
 
   // 🔒 Emergency switch: change true into false to open the site right now,
   //    whatever the timer says (a page that's already open follows within a minute).

@@ -15,8 +15,19 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Caveat:wght@500;700&family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <script src="config.js"></script>
 </head>
 <body>
+
+  <!-- 🔒 "Gaat later vandaag open" screen. Switch it off in config.js (locked: false). -->
+  <div class="site-lock" id="siteLock" aria-live="polite">
+    <div class="site-lock-card">
+      <p class="site-lock-emoji" aria-hidden="true">🔒</p>
+      <p class="site-lock-title">Nog even geduld.</p>
+      <p>Hier staat iets klaar, maar het gaat pas <strong>later vandaag</strong> open.</p>
+      <p class="site-lock-small">Meer kan ik niet zeggen. 🤐<br>Tik ondertussen gerust ergens.</p>
+    </div>
+  </div>
 
   <!-- Confetti / sparkle layer (drawn by script.js) -->
   <canvas id="fx" aria-hidden="true"></canvas>
@@ -357,18 +368,16 @@
   <!-- ============ CAKE ============ -->
   <section class="section cake-section" data-fx="cake">
     <h2 class="section-title">Nog één ding: <span class="squiggle">doe een wens</span></h2>
-    <p class="section-sub">Ogen dicht, wens bedenken, en tik dan op de taart om de kaarsjes uit te blazen.</p>
+    <p class="section-sub">Ogen dicht, wens bedenken, en blaas dan alle <span data-candles>24</span> kaarsjes uit. Eén voor één.</p>
 
-    <button class="cake" id="cake" aria-label="Blaas de kaarsjes uit">
-      <span class="candles">
-        <span class="candle c2"><span class="flame"></span><span class="num">2</span></span>
-        <span class="candle c4"><span class="flame"></span><span class="num">4</span></span>
-      </span>
-      <span class="tier tier-top"><span class="drip"></span></span>
-      <span class="tier tier-bottom"><span class="sprinkles"></span></span>
+    <div class="cake" id="cake">
       <span class="plate"></span>
-    </button>
-    <p class="wish-msg" id="wishMsg">De kaarsjes wachten…</p>
+      <span class="tier tier-bottom"><span class="sprinkles"></span><span class="cake-name" data-name>Jette</span></span>
+      <span class="tier tier-top"><span class="drip"></span><span class="cake-24">24</span></span>
+      <div class="candles" id="candles"></div>
+    </div>
+    <p class="wish-msg" id="wishMsg">Tik op elk kaarsje om het uit te blazen</p>
+    <button class="btn ghost" id="relight" hidden>Opnieuw aansteken 🔥</button>
   </section>
 
   <!-- ============ FINE PRINT ============ -->

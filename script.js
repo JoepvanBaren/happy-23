@@ -1,18 +1,4 @@
-/* =========================================================
-   ✏️  EDIT ME — the only settings you need to touch
-   ========================================================= */
-const CONFIG = {
-  // Her name: shown in the big title, the footer and the browser tab.
-  name: "Jette",
-
-  // Optional: your phone number in international format, digits only
-  // (e.g. "31612345678"). If filled in, the "Send my answer" button opens
-  // WhatsApp straight to you. Leave empty to let her pick who to send it to.
-  whatsappNumber: "",
-
-  // Tiny sparkles that follow the mouse on desktop (true / false).
-  mouseTrail: true,
-};
+/* Settings (name, lock, candles, …) live in config.js */
 
 /* =========================================================
    Name
@@ -239,11 +225,12 @@ const hint = document.getElementById("tapHint");
 let hintGone = false;
 
 function burstAt(e) {
+  if (!hintGone) { hintGone = true; hint.classList.add("gone"); }
+  if (e.target.closest?.(".candle")) return;
   if (!tryPop(e)) {
     const zone = e.target.closest?.("[data-fx]");
     spawn(e.clientX, e.clientY, { theme: zone ? zone.dataset.fx : "party" });
   }
-  if (!hintGone) { hintGone = true; hint.classList.add("gone"); }
 }
 
 /* ---------- poppable balloons ---------- */
@@ -251,7 +238,7 @@ function burstAt(e) {
 // clicks can't reach them directly. Instead we check by position whether a tap
 // landed on a balloon that's actually visible, i.e. not behind a card or button.
 const balloons = [...document.querySelectorAll(".balloon")];
-const SOLID = "button, a, .option, .question-card, .polaroid, .stat, .compare, .result, .redeem, .fineprint, .footer, .lock-card, .ribbon, .evidence";
+const SOLID = "button, a, .option, .question-card, .polaroid, .stat, .compare, .result, .redeem, .fineprint, .footer, .lock-card, .site-lock-card, .ribbon, .evidence";
 
 function balloonAt(x, y, pad) {
   return balloons.find(b => {
@@ -464,28 +451,92 @@ evidence.forEach(card => card.addEventListener("click", () => {
 }));
 
 /* =========================================================
-   🎂 Make a wish
+   🎂 Make a wish: blow out every single candle
    ========================================================= */
 const cake = document.getElementById("cake");
+const candleBox = document.getElementById("candles");
 const wishMsg = document.getElementById("wishMsg");
-let blown = false, wishes = 0;
+const relightBtn = document.getElementById("relight");
+const N = Math.max(1, CONFIG.candles | 0);
+const candles = [];
+let blownOut = 0;
 
-cake.addEventListener("click", () => {
-  blown = !blown;
-  cake.classList.toggle("blown", blown);
-  cake.setAttribute("aria-label", blown ? "Steek de kaarsjes weer aan" : "Blaas de kaarsjes uit");
-  if (blown) {
-    wishes++;
-    wishMsg.textContent = wishes === 1
-      ? "Wens ontvangen ✓ Levertijd: ongeveer een jaar."
-      : `Wens #${wishes} ontvangen ✓ Nu word je wel een beetje hebberig 😄`;
-    const r = cake.getBoundingClientRect();
-    spawn(r.left + r.width / 2, r.top + 30, { theme: "cake", count: 70, power: 1.4, spread: Math.PI });
-    setTimeout(() => celebrate("cake"), 200);
+document.querySelectorAll("[data-candles]").forEach(el => { el.textContent = N; });
+
+// Candles stand in a row on the top tier (heights: see .candle in style.css).
+candleBox.style.setProperty("--n", N);
+for (let i = 0; i < N; i++) {
+  const c = document.createElement("button");
+  c.className = i % 2 ? "candle tall" : "candle";
+  c.setAttribute("aria-label", `Kaarsje ${i + 1} uitblazen`);
+  c.style.setProperty("--hd", 40 + ((i * 7) % 5) * 3 + "px");
+  c.style.setProperty("--c", PALETTE[i % PALETTE.length]);
+  c.style.setProperty("--d", (-Math.random() * .4).toFixed(2) + "s");
+  c.innerHTML = '<span class="flame"></span><span class="stick"></span>';
+  c.addEventListener("click", () => blowOut(c));
+  candleBox.appendChild(c);
+  candles.push(c);
+}
+
+function blowOut(c) {
+  if (c.classList.contains("out")) return;
+  c.classList.add("out");
+  blownOut++;
+  const r = c.getBoundingClientRect();
+  spawn(r.left + r.width / 2, r.top + r.height * .2, { theme: "cake", count: 10, power: .55 });
+
+  const left = N - blownOut;
+  if (left === 0) {
+    wishMsg.textContent = "Alles uit! Wens ontvangen ✓ Levertijd: ongeveer een jaar.";
+    relightBtn.hidden = false;
+    const cr = cake.getBoundingClientRect();
+    spawn(cr.left + cr.width / 2, cr.top + cr.height * .3, { theme: "cake", count: 90, power: 1.5 });
+    setTimeout(() => celebrate("cake"), 250);
+    setTimeout(() => rain(120), 600);
+  } else if (blownOut === 1) {
+    wishMsg.textContent = `Eentje! Nog ${left} te gaan 💨`;
+  } else if (left === 1) {
+    wishMsg.textContent = "Nog één!";
+  } else if (blownOut === Math.floor(N / 2)) {
+    wishMsg.textContent = "Halverwege. Diep ademhalen!";
   } else {
-    wishMsg.textContent = "Weer aan! Je mag nog een wens doen.";
+    wishMsg.textContent = `${blownOut} van ${N} uit`;
   }
+}
+
+relightBtn.addEventListener("click", () => {
+  relightBtn.hidden = true;
+  blownOut = 0;
+  wishMsg.textContent = "Weer aan! Je mag nog een wens doen.";
+  candles.forEach((c, i) => setTimeout(() => c.classList.remove("out"), i * 40));
 });
+
+/* =========================================================
+   🔒 "Gaat later vandaag open" (config.js → locked)
+   ========================================================= */
+// While locked, re-check config.js every minute (skipping the browser cache),
+// so a page she already has open unlocks itself once you set locked: false.
+if (document.documentElement.classList.contains("site-locked")) {
+  // The blurred page behind the lock can't be tabbed into with the keyboard.
+  const behind = [...document.body.children].filter(el => !el.matches(".site-lock, #fx, .balloons, script"));
+  behind.forEach(el => { el.inert = true; });
+
+  const checkLock = async () => {
+    try {
+      const res = await fetch(`config.js?t=${Date.now()}`, { cache: "no-store" });
+      if (res.ok && /^\s*locked\s*:\s*false/m.test(await res.text())) {
+        behind.forEach(el => { el.inert = false; });
+        document.documentElement.classList.remove("site-locked");
+        window.scrollTo(0, 0);
+        celebrate();
+        setTimeout(() => rain(140), 300);
+        return;
+      }
+    } catch (err) { /* offline or opened as a file: try again later */ }
+    setTimeout(checkLock, 60000);
+  };
+  checkLock();
+}
 
 /* =========================================================
    🎊 Finale button + welcome confetti

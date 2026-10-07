@@ -1013,25 +1013,19 @@ body.locked .lockable > :not(.lock-overlay) {
 }
 .case-status.closed { background: var(--yellow); animation: popIn .6s cubic-bezier(.2, 1.6, .4, 1) both; }
 
-/* ---------- cake ---------- */
+/* ---------- cake (candles are added by script.js) ---------- */
 .cake {
   position: relative;
-  display: block;
-  width: 280px;
-  height: 310px;
-  margin: 30px auto 0;
-  padding: 0;
-  background: none;
-  border: 0;
-  cursor: pointer;
+  width: min(760px, 100%);
+  height: 280px;
+  margin: 80px auto 0;
 }
-.cake:focus-visible { outline: 4px solid var(--sky); outline-offset: 10px; border-radius: 20px; }
 .plate {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 28px;
+  height: 30px;
   background: #fff;
   border: 4px solid var(--ink);
   border-radius: 50%;
@@ -1042,12 +1036,13 @@ body.locked .lockable > :not(.lock-overlay) {
   border: 4px solid var(--ink);
 }
 .tier-bottom {
-  left: 20px;
-  right: 20px;
+  left: 3%;
+  right: 3%;
   bottom: 14px;
-  height: 104px;
+  height: 130px;
   background: var(--pink);
-  border-radius: 14px 14px 20px 20px;
+  border-radius: 16px 16px 22px 22px;
+  box-shadow: inset -24px 0 0 rgba(0, 0, 0, .08);
 }
 .tier-bottom::before {
   content: "";
@@ -1069,13 +1064,27 @@ body.locked .lockable > :not(.lock-overlay) {
   background-size: 46px 30px, 38px 34px, 52px 26px, 30px 40px;
   background-position: 0 0, 14px 8px, 26px 4px, 8px 16px;
 }
+.cake-name {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16px;
+  font-family: var(--hand);
+  font-weight: 700;
+  font-size: 3.4rem;
+  line-height: 1;
+  text-align: center;
+  color: #fff;
+  text-shadow: 3px 3px 0 var(--ink), -1.5px -1.5px 0 var(--ink), 1.5px -1.5px 0 var(--ink), -1.5px 1.5px 0 var(--ink);
+}
 .tier-top {
-  left: 52px;
-  right: 52px;
-  bottom: 114px;
-  height: 82px;
+  left: 10%;
+  right: 10%;
+  bottom: 140px;
+  height: 110px;
   background: #FFF3D6;
-  border-radius: 12px 12px 6px 6px;
+  border-radius: 14px 14px 6px 6px;
+  box-shadow: inset -20px 0 0 rgba(0, 0, 0, .05);
 }
 .drip {
   position: absolute;
@@ -1085,77 +1094,179 @@ body.locked .lockable > :not(.lock-overlay) {
     radial-gradient(circle at 50% 0, var(--pink) 9px, transparent 9.5px) 0 12px / 22px 20px repeat-x,
     linear-gradient(var(--pink), var(--pink)) 0 0 / 100% 13px no-repeat;
 }
+.cake-24 {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 10px;
+  font-family: var(--display);
+  font-size: 3.6rem;
+  line-height: 1;
+  text-align: center;
+  color: var(--yellow);
+  -webkit-text-stroke: 2.5px var(--ink);
+}
+
+/* the row of candles standing on the top tier */
 .candles {
   position: absolute;
+  left: calc(10% + 14px);
+  right: calc(10% + 14px);
+  bottom: 246px;
+  display: grid;
+  grid-template-columns: repeat(var(--n, 24), 1fr);
+  align-items: end;
+}
+.candle {
+  --h: var(--hd, 44px);
+  position: relative;
+  z-index: 2;
+  height: calc(var(--h) + 32px);
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.candle.tall { z-index: 1; }
+.candle::before { content: ""; position: absolute; inset: -4px -2px 0; } /* tap area */
+.candle:focus-visible { outline: 3px solid var(--sky); outline-offset: 2px; border-radius: 6px; }
+.candle.out { pointer-events: none; } /* taps fall through to the candle behind */
+.stick {
+  position: absolute;
   left: 50%;
-  bottom: 192px;
-  display: flex;
-  gap: 12px;
+  bottom: 0;
+  width: 12px;
+  height: var(--h);
+  background: repeating-linear-gradient(-35deg, var(--c) 0 5px, #fff 5px 9px);
+  border: 2px solid var(--ink);
+  border-radius: 3px 3px 2px 2px;
   transform: translateX(-50%);
 }
-.candle { position: relative; }
-.num {
-  display: block;
-  font-family: var(--display);
-  font-size: 76px;
-  line-height: .82;
-  -webkit-text-stroke: 3px var(--ink);
-}
-.c2 .num { color: var(--yellow); }
-.c4 .num { color: var(--sky); }
-.candle::before { /* wick */
+.stick::before { /* wick */
   content: "";
   position: absolute;
   left: 50%;
-  top: -10px;
-  width: 3px;
-  height: 12px;
+  top: -9px;
+  width: 2px;
+  height: 8px;
   background: var(--ink);
   transform: translateX(-50%);
 }
 .flame {
   position: absolute;
   left: 50%;
-  top: -40px;
-  width: 20px;
-  height: 32px;
+  bottom: calc(var(--h) + 7px);
+  width: 13px;
+  height: 21px;
   background: radial-gradient(ellipse at 50% 70%, #fff 0 18%, var(--yellow) 42%, var(--orange) 78%);
   border-radius: 50% 50% 50% 50% / 62% 62% 38% 38%;
-  box-shadow: 0 0 22px 6px rgba(255, 170, 40, .55);
+  box-shadow: 0 0 16px 4px rgba(255, 170, 40, .5);
   transform-origin: 50% 90%;
   animation: flicker .18s ease-in-out infinite alternate;
-  transition: transform .3s ease, opacity .3s ease;
+  animation-delay: var(--d, 0s);
+  transition: transform .25s ease, opacity .25s ease;
 }
-.c4 .flame { animation-delay: -.09s; }
 @keyframes flicker {
-  from { transform: translateX(-50%) rotate(-3deg) scaleY(1); }
-  to   { transform: translateX(-50%) rotate(3deg) scaleY(1.08); }
+  from { transform: translateX(-50%) rotate(-4deg) scaleY(1); }
+  to   { transform: translateX(-50%) rotate(4deg) scaleY(1.1); }
 }
-.cake.blown .flame { animation: none; transform: translateX(-50%) scale(0); opacity: 0; }
-.cake.blown .candle::after { /* smoke */
+.candle.out .flame { animation: none; transform: translateX(-50%) scale(0); opacity: 0; }
+.candle.out::after { /* smoke */
   content: "";
   position: absolute;
   left: 50%;
-  top: -24px;
-  width: 14px;
-  height: 14px;
+  bottom: calc(var(--h) + 4px);
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   background: rgba(110, 110, 140, .45);
-  box-shadow: 6px -14px 0 2px rgba(110, 110, 140, .35), -4px -30px 0 4px rgba(110, 110, 140, .25);
-  animation: smoke 2.2s ease-out forwards;
+  box-shadow: 6px -12px 0 2px rgba(110, 110, 140, .32), -4px -25px 0 4px rgba(110, 110, 140, .2);
+  animation: smoke 1.8s ease-out forwards;
 }
 @keyframes smoke {
   from { opacity: 1; transform: translate(-50%, 0) scale(.6); }
-  to   { opacity: 0; transform: translate(-30%, -70px) scale(1.6); }
+  to   { opacity: 0; transform: translate(-30%, -55px) scale(1.5); }
 }
 .wish-msg {
   min-height: 2.6em;
-  margin: 18px auto 0;
+  margin: 18px auto 10px;
   max-width: 30ch;
   font-family: var(--hand);
   font-weight: 700;
   font-size: 1.7rem;
   line-height: 1.2;
+}
+
+/* phone: narrower cake, so every other candle is tall. Short ones are tapped
+   low, tall ones high, and each gets a tap area two candles wide. */
+@media (max-width: 560px) {
+  .cake { height: 240px; margin-top: 100px; }
+  .tier-bottom { left: 1%; right: 1%; height: 110px; }
+  .tier-top { left: 5%; right: 5%; bottom: 120px; height: 92px; }
+  .candles { left: calc(5% + 8px); right: calc(5% + 8px); bottom: 208px; }
+  .candle { --h: 28px; }
+  .candle.tall { --h: 66px; }
+  .candle::before { inset: -6px -50% 0; }
+  .stick { width: 8px; border-width: 1.5px; background: repeating-linear-gradient(-35deg, var(--c) 0 4px, #fff 4px 7px); }
+  .flame { width: 10px; height: 17px; bottom: calc(var(--h) + 6px); box-shadow: 0 0 12px 3px rgba(255, 170, 40, .5); }
+  .cake-name { font-size: 2.6rem; bottom: 12px; }
+  .cake-24 { font-size: 2.8rem; bottom: 8px; }
+  .wish-msg { font-size: 1.5rem; }
+}
+
+/* ---------- "gaat later vandaag open" lock screen (config.js → locked) ---------- */
+.site-lock { display: none; }
+/* the real page shows through a heavy frosted blur: layout and colours yes, details no */
+html.site-locked body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 940;
+  background: rgba(255, 247, 238, .18);
+  -webkit-backdrop-filter: blur(17px) saturate(1.25);
+  backdrop-filter: blur(17px) saturate(1.25);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  html.site-locked body::before { background: rgba(255, 247, 238, .95); }
+}
+html.site-locked .balloons { z-index: 945; } /* balloons stay sharp (and poppable) in front */
+html.site-locked .tap-hint { display: none; }
+html.site-locked .site-lock {
+  position: fixed;
+  inset: 0;
+  z-index: 950;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+}
+.site-lock-card {
+  width: 100%;
+  max-width: 420px;
+  padding: 34px 28px 30px;
+  text-align: center;
+  background: #fff;
+  border: 4px solid var(--ink);
+  border-radius: var(--radius);
+  box-shadow: 10px 10px 0 var(--pink);
+  animation: popIn .7s cubic-bezier(.2, 1.6, .4, 1) both;
+}
+.site-lock-card p { margin: 0 0 14px; font-size: 1.15rem; }
+.site-lock-card .site-lock-emoji {
+  display: inline-block;
+  font-size: 3.6rem;
+  line-height: 1;
+  animation: wiggle 2.6s ease-in-out infinite;
+}
+.site-lock-card .site-lock-title { font-family: var(--display); font-size: clamp(2rem, 8vw, 2.6rem); line-height: 1.1; }
+.site-lock-card .site-lock-small {
+  margin: 20px 0 0;
+  font-family: var(--hand);
+  font-weight: 700;
+  font-size: 1.45rem;
+  line-height: 1.2;
+  color: var(--ink-soft);
 }
 
 /* ---------- fine print ---------- */
@@ -1280,7 +1391,7 @@ body.locked .lockable > :not(.lock-overlay) {
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .balloon, .ribbon-track, .digit, .digit::after, .gift, .skier, .snow,
-  .bouncer, .mat, .tap-hint, .reveal-big, .flame, .ev-tap {
+  .bouncer, .mat, .tap-hint, .reveal-big, .flame, .ev-tap, .site-lock-emoji {
     animation: none !important;
   }
   .tap-hint { transform: translateX(-50%); }

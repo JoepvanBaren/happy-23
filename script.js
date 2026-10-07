@@ -512,30 +512,71 @@ relightBtn.addEventListener("click", () => {
 });
 
 /* =========================================================
-   🔒 "Gaat later vandaag open" (config.js → locked)
+   🔒 Lock screen + countdown (config.js → unlockAt / locked)
    ========================================================= */
-// While locked, re-check config.js every minute (skipping the browser cache),
-// so a page she already has open unlocks itself once you set locked: false.
-if (document.documentElement.classList.contains("site-locked")) {
+if (CONFIG.locked && !PEEK) {
+  const root = document.documentElement;
+  const countdown = document.getElementById("countdown");
+  const digits = {};
+  countdown.querySelectorAll("[data-unit]").forEach(el => { digits[el.dataset.unit] = el; });
   // The blurred page behind the lock can't be tabbed into with the keyboard.
   const behind = [...document.body.children].filter(el => !el.matches(".site-lock, #fx, .balloons, script"));
-  behind.forEach(el => { el.inert = true; });
+  behind.forEach(el => { el.inert = root.classList.contains("site-locked"); });
 
-  const checkLock = async () => {
+  let clockOffset = 0;    // GitHub's clock minus this device's clock, so changing the phone's time doesn't help
+  let openedByHand = false; // config.js on GitHub says locked: false
+  let synced = false;
+  let timer = null;
+  const now = () => Date.now() + clockOffset;
+  const pad = n => String(n).padStart(2, "0");
+
+  const setLocked = on => {
+    if (on === root.classList.contains("site-locked")) return;
+    root.classList.toggle("site-locked", on);
+    behind.forEach(el => { el.inert = on; });
+    if (!on) {
+      window.scrollTo(0, 0);
+      celebrate();
+      setTimeout(() => rain(140), 300);
+    }
+  };
+
+  if (isNaN(UNLOCK_TIME)) { // no timer set: just "later vandaag"
+    countdown.hidden = true;
+    document.getElementById("lockText").innerHTML = "Hier staat iets klaar, maar het gaat pas <strong>later vandaag</strong> open.";
+  }
+
+  const tick = () => {
+    setLocked(!openedByHand && !(now() >= UNLOCK_TIME));
+    if (!root.classList.contains("site-locked")) {
+      if (synced) clearInterval(timer);
+      return;
+    }
+    if (isNaN(UNLOCK_TIME)) return;
+    const secs = Math.max(0, Math.ceil((UNLOCK_TIME - now()) / 1000));
+    digits.h.textContent = pad(Math.floor(secs / 3600));
+    digits.m.textContent = pad(Math.floor(secs / 60) % 60);
+    digits.s.textContent = pad(secs % 60);
+    countdown.classList.toggle("soon", secs <= 60);
+  };
+
+  // Every minute: fetch config.js fresh (skipping all caches) to read GitHub's
+  // clock from the response, and to see whether you flipped locked to false.
+  const poll = async () => {
     try {
       const res = await fetch(`config.js?t=${Date.now()}`, { cache: "no-store" });
-      if (res.ok && /^\s*locked\s*:\s*false/m.test(await res.text())) {
-        behind.forEach(el => { el.inert = false; });
-        document.documentElement.classList.remove("site-locked");
-        window.scrollTo(0, 0);
-        celebrate();
-        setTimeout(() => rain(140), 300);
-        return;
-      }
-    } catch (err) { /* offline or opened as a file: try again later */ }
-    setTimeout(checkLock, 60000);
+      const serverTime = Date.parse(res.headers.get("Date"));
+      if (!isNaN(serverTime)) clockOffset = serverTime - Date.now();
+      if (res.ok && /^\s*locked\s*:\s*false/m.test(await res.text())) openedByHand = true;
+    } catch (err) { /* offline or opened as a file: use this device's clock */ }
+    synced = true;
+    tick();
+    if (root.classList.contains("site-locked")) setTimeout(poll, 60000);
   };
-  checkLock();
+
+  timer = setInterval(tick, 250);
+  tick();
+  poll();
 }
 
 /* =========================================================

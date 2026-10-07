@@ -24,7 +24,12 @@
     <div class="site-lock-card">
       <p class="site-lock-emoji" aria-hidden="true">🔒</p>
       <p class="site-lock-title">Nog even geduld.</p>
-      <p>Hier staat iets klaar, maar het gaat pas <strong>later vandaag</strong> open.</p>
+      <p id="lockText">Hier staat iets klaar. Het gaat open over:</p>
+      <div class="countdown" id="countdown" role="timer">
+        <span><b data-unit="h">--</b><small>uur</small></span>
+        <span><b data-unit="m">--</b><small>min</small></span>
+        <span><b data-unit="s">--</b><small>sec</small></span>
+      </div>
       <p class="site-lock-small">Meer kan ik niet zeggen. 🤐<br>Tik ondertussen gerust ergens.</p>
     </div>
   </div>

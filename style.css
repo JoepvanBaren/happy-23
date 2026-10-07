@@ -1260,6 +1260,28 @@ html.site-locked .site-lock {
   animation: wiggle 2.6s ease-in-out infinite;
 }
 .site-lock-card .site-lock-title { font-family: var(--display); font-size: clamp(2rem, 8vw, 2.6rem); line-height: 1.1; }
+.countdown { display: flex; justify-content: center; gap: 10px; margin: 4px 0 6px; }
+.countdown span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 76px;
+  padding: 10px 6px 8px;
+  color: #fff;
+  background: var(--ink);
+  border-radius: 16px;
+  box-shadow: 4px 4px 0 var(--yellow);
+}
+.countdown b { font-family: var(--display); font-weight: 400; font-size: 2.4rem; line-height: 1; }
+.countdown small {
+  margin-top: 4px;
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  opacity: .75;
+}
+.countdown.soon span { background: var(--pink); animation: boxPop 1s ease-in-out infinite; }
 .site-lock-card .site-lock-small {
   margin: 20px 0 0;
   font-family: var(--hand);

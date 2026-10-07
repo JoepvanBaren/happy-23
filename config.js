@@ -2,9 +2,13 @@
    ✏️  SETTINGS: the only file you need to edit
    ========================================================= */
 const CONFIG = {
-  // 🔒 While this is true, the whole site only says "gaat later vandaag open".
-  //    Tonight: change true into false and commit. GitHub needs 1–2 minutes;
-  //    a page she already has open unlocks itself within about a minute.
+  // ⏰ The site shows a blurred lock screen with a countdown until this moment,
+  //    then opens by itself (with confetti). "+02:00" = Dutch/Austrian summer
+  //    time, which applies until 25 October.
+  unlockAt: "2026-10-07T18:35:00+02:00",
+
+  // 🔒 Emergency switch: change true into false to open the site right now,
+  //    whatever the timer says (a page that's already open follows within a minute).
   //    Want to peek at the real site while it's still locked? Add ?stiekem
   //    to the address. Don't send her that link!
   locked: true,
@@ -25,5 +29,8 @@ const CONFIG = {
 };
 
 // Apply the lock before the page draws, so nothing flashes on screen.
+// (script.js double-checks the time against GitHub's clock afterwards.)
 const PEEK = /[?&]stiekem\b/.test(location.search);
-document.documentElement.classList.toggle("site-locked", CONFIG.locked && !PEEK);
+const UNLOCK_TIME = Date.parse(CONFIG.unlockAt); // NaN = no timer, stay locked
+document.documentElement.classList.toggle("site-locked",
+  CONFIG.locked && !PEEK && !(Date.now() >= UNLOCK_TIME));
